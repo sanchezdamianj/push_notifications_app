@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../../domain/entities/pushe_message.dart';
 import 'package:push_notifications_app/firebase_options.dart';
+import '../../../config/local_notifications/local_notifications.dart';
 
 part 'notification_event.dart';
 part 'notification_state.dart';
@@ -65,6 +66,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     if (fcmToken != null) {
       add(NotificationStatusChanged(settings.authorizationStatus));
     }
+    print(fcmToken);
   }
 
   void handleRemoteMessage(RemoteMessage message) {
@@ -97,6 +99,8 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       provisional: false,
       sound: true,
     );
+
+    await LocalNotifications.requestPermissionLocalNotifications();
     add(NotificationStatusChanged(settings.authorizationStatus));
   }
 
